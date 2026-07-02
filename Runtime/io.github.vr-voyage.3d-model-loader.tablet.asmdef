@@ -1,0 +1,21 @@
+{
+    "name": "io.github.vr-voyage.3d-model-loader.tablet",
+    "rootNamespace": "",
+    "references": [
+        "GUID:847588d5929a83747b13393f746393ae",
+        "GUID:e1a67d4778ffb214390ddafa61c1a557",
+        "GUID:99835874ee819da44948776e0df4ff1d",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:6490804aa441dfe4b88eb56cccbdf081",
+        "GUID:f70a94b0bedfa8ec50ed757f72032810"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

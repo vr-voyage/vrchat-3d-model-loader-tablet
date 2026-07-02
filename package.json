@@ -1,0 +1,18 @@
+{
+  "name": "io.github.vr-voyage.3d-model-loader.tablet",
+  "displayName": "Voyage 3D Model Loader Tablet",
+  "version": "0.9.0",
+  "description": "Provides a tablet to load 3D Models in-game, using a 3D Model Loader as a backend !",
+  "gitDependencies": {},
+  "vpmDependencies": {
+    "io.github.vr-voyage.3d-model-loader": ">=1.2.0"
+  },
+  "author": {
+    "name": "Voyage Voyage",
+    "email": "voyage@dontcontactmebymail.com",
+    "url": "https://github.com/vr-voyage"
+  },
+  "legacyFolders": {},
+  "legacyFiles": {},
+  "unity": "2022.3"
+}
