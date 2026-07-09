@@ -120,12 +120,7 @@ public class NodeInspectorTransformController : INodeInspectorComponent
 
     public void SetPosX()
     {
-        Debug.Log("<color=cyan>Set Pos X !</color>");
-        if (displayedTransform == null || position == null || position.Length < 3)
-        {
-            Debug.Log($"<color=cyan>{displayedTransform == null} - {position == null} - {position.Length}</color>");
-            return;
-        }
+        if (displayedTransform == null || position == null || position.Length < 3) return;
         if (TryGetValue(position[0], out float value))
         {
             Vector3 localPosition = displayedTransform.localPosition;

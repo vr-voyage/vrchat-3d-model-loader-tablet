@@ -32,14 +32,17 @@ public class FrameWithCamera : UdonSharpBehaviour
     {
         if (cam == null || target == null) return;
 
-
-
-        // 1. Compute combined world-space bounds
+        /* Bounds.Encapsulate is broken on my Unity installation.
+           Doing new Bounds().Encapsulate(veryBigBounds).size() will return 0
+           So... here we are ! Reimplementing Unity BOUNDS CALCULATION BY HAND ! */
+        /* So most of this code is vibe'd except that part which required manual intervention */ 
         Vector3[] minMax = new Vector3[2] { Vector3.zero, Vector3.zero };
 
         Vector3 boundingBoxSize = GetBoundingBoxSize(target, minMax);
         Vector3 center = minMax[0] + (boundingBoxSize * 0.5f);
         Vector3 extents = boundingBoxSize * 0.5f;
+
+        Debug.Log($"<color=cyan>[{minMax[0]} - {minMax[1]}] from {target.transform.position} Size: {boundingBoxSize} Center: {center} Extents: {extents}</color>");
 
         if (debugObject != null) debugObject.transform.position = center;
 
@@ -58,33 +61,30 @@ public class FrameWithCamera : UdonSharpBehaviour
         // Determine viewing direction
         Vector3 dir = cam.transform.forward;
 
-        // 2. Position camera based on projection type
-        if (cam.orthographic)
-        {
-            float requiredSize = GetOrthographicSize(extents, aspect, margin);
-            cam.orthographicSize = requiredSize;
-
-            // Orthographic distance doesn't affect framing, but place it reasonably
-            cam.transform.position = center - dir * (extents.z + cam.nearClipPlane);
-            cam.transform.forward = dir;
-        }
-        else
-        {
-            float distance = GetPerspectiveDistance(extents, cam.fieldOfView, aspect, margin);
-            cam.transform.position = center - dir * distance;
-            cam.transform.LookAt(center);
-        }
+        // Position camera
+        float distance = GetPerspectiveDistance(extents, cam.fieldOfView, aspect, margin);
+        cam.transform.position = center - dir * distance;
+        cam.transform.LookAt(center);
+        
     }
 
     private static Vector3 GetBoundingBoxSize(GameObject root, Vector3[] minMax)
     {
         Renderer[] renderers = root.GetComponentsInChildren<Renderer>();
 
-        Vector3 min = minMax[0];
-        Vector3 max = minMax[1];
-
-        foreach (Renderer r in renderers)
+        int nRenderers = renderers.Length;
+        if (nRenderers == 0)
         {
+            return Vector3.zero;
+        }
+
+        Vector3 min = renderers[0].bounds.min;
+        Vector3 max = renderers[0].bounds.max;
+
+        for (int i = 1; i < nRenderers; i++)
+        {
+            Renderer r = renderers[i];
+            Debug.Log($"<color=cyan>{r.name} - {r.bounds.min} - {r.bounds.max}</color>");
             min = Vector3.Min(min, r.bounds.min);
             max = Vector3.Max(max, r.bounds.max);
         }
@@ -104,14 +104,6 @@ public class FrameWithCamera : UdonSharpBehaviour
         float distWidth = adjustedX / (tanHalfFov * aspect);
 
         return Mathf.Max(distHeight, distWidth);
-    }
-
-    private static float GetOrthographicSize(Vector3 extents, float aspect, float margin)
-    {
-        float adjustedY = extents.y / (1f - margin);
-        float adjustedX = extents.x / (1f - margin);
-        // orthographicSize = half visible height
-        return Mathf.Max(adjustedY, adjustedX / aspect);
     }
 
 }
