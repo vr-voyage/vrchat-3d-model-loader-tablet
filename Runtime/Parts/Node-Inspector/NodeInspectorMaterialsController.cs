@@ -10,7 +10,7 @@ public class NodeInspectorMaterialsController : INodeInspectorComponent
     public GameObject unknownPrefab;
 
     public RectTransform listParent;
-    void Clear()
+    public override void Clear()
     {
         Transform t = listParent;
         int childCount = t.childCount;

@@ -1,4 +1,5 @@
 
+using DG.Tweening;
 using ThreeDModelLoader;
 using UdonSharp;
 using UnityEngine;
@@ -14,7 +15,20 @@ public class MainUIController : UdonSharpBehaviour
     public NodeTreeController nodeTree;
     public TitleBarController titleBar;
     public LoadStatusController loadStatus;
+    public StatsController statsController;
+    public SidePanelLeftController leftPanelController;
 
+    public void Awake()
+    {
+        FillHierarchy();
+        nodeInspector.Display(tabletDispatcher.GetRoot());
+    }
+
+    public void RootHasMoved()
+    {
+        Debug.Log("<color=cyan>Refreshing display</color>");
+        nodeInspector.RefreshIfDisplaying(tabletDispatcher.GetRoot());
+    }
 
     public void LoadData(byte[] data, VRCUrl from)
     {
@@ -33,7 +47,7 @@ public class MainUIController : UdonSharpBehaviour
     {
         Debug.Log("Scene Loaded");
 
-        SendCustomEventDelayedSeconds(nameof(ShowContent), 1.0f);
+        SendCustomEventDelayedSeconds(nameof(ShowContent), 0.015f);
     }
 
     public void Error()
@@ -41,23 +55,45 @@ public class MainUIController : UdonSharpBehaviour
         loadStatus.ShowError("Could not load 3D Model");
     }
 
-
-
     public void ShowContent()
     {
         loadStatus.ShowSuccess();
-        loadStatus.ShowExtensions(loadingHandler.GetExtensionsUsed());
-        ShowHierarchy();
+        ILoaderHandler handler = loadingHandler.GetCurrentHandler();
+        if (handler != null)
+        {
+            statsController.ShowExtensions(handler.GetExtensionsUsed());
+            statsController.SetStats(handler.GetStats());
+            statsController.SetDimensions(handler.GetDimensions());
+            
+        }
+
+        NodeSelected(tabletDispatcher.GetRoot());
+        FillHierarchy();
+    }
+
+    public void FillHierarchy()
+    {
+        nodeTree.ShowHierarchy(tabletDispatcher.GetRoot());
     }
 
     public void ShowHierarchy()
     {
-        nodeTree.ShowHierarchy(tabletDispatcher.objectRoot.gameObject);
+        leftPanelController.ShowPanel(SidePanelLeftController.hierarchyPanelIndex);
     }
+
+    public void ShowStats()
+    {
+        leftPanelController.ShowPanel(SidePanelLeftController.statsPanelIndex);
+    }
+
 
     public void DownloadSuccess(VRCUrl url)
     {
         titleBar.SetFilenameFromUrl(url);
+        statsController.Clear();
+        statsController.SetURL(url);
+        nodeTree.Clear();
+        nodeInspector.Clear();
     }
 
     public void DownloadFailure(string message)

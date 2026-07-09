@@ -7,4 +7,6 @@ using VRC.Udon;
 public abstract class INodeInspectorComponent : UdonSharpBehaviour
 {
     public abstract void Display(GameObject go);
+
+    public abstract void Clear();
 }

@@ -7,6 +7,26 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: 3DTabletOut
+    second: {fileID: 2100000, guid: f2fdd2e3ed37c5e4da286b409a1e84fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 3DTabletScreen
+    second: {fileID: 2100000, guid: 28ac4af05d0b0cd4cbe1b379d295aa0d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 3DTabletTextIn
+    second: {fileID: 2100000, guid: a2caa9a9c43a7374b82e0c9553dddaf7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 3DTabletTextOut
+    second: {fileID: 2100000, guid: 2ac2424cc3fddb6499d1b64c3779b663, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Material.001
     second: {fileID: 2100000, guid: abfa3462eccfe8241bed165b3b74a133, type: 2}
   - first:

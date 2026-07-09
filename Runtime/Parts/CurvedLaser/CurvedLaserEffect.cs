@@ -29,10 +29,8 @@ public class CurvedLaserEffect : UdonSharpBehaviour
     private DataList points = new DataList(); // We'll use a simpler list for the example
     private DataList trajectoryPoints = new DataList();
 
-    Vector3 hitLocation;
-
-    public Transform hitLocationPoint;
-    public UdonSharpBehaviour hitLocationReceiver;
+    public Vector3 hitLocation;
+    public Transform teleportedToHit;
 
     void Update()
     {
@@ -92,12 +90,7 @@ public class CurvedLaserEffect : UdonSharpBehaviour
 
     void NotifyHit()
     {
-        if (hitLocationPoint != null) hitLocationPoint.position = hitLocation;
-        if (hitLocationReceiver != null)
-        {
-            hitLocationReceiver.SetProgramVariable("hitLocation", hitLocation);
-            hitLocationReceiver.SendCustomEvent("HandleHitLocation");
-        }
+        if (teleportedToHit != null) teleportedToHit.position = hitLocation;
     }
 
     public override void InputUse(bool value, UdonInputEventArgs args)

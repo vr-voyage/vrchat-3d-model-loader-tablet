@@ -18,4 +18,10 @@ public class NodeInspectorMeshColliderController : INodeInspectorComponent
         meshColliderCheck.isOn = meshCollider.enabled;
         gameObject.SetActive(true);
     }
+
+    public override void Clear()
+    {
+        meshColliderCheck.isOn = false;
+        gameObject.SetActive(false);
+    }
 }

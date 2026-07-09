@@ -1,0 +1,118 @@
+
+using UdonSharp;
+using UnityEngine;
+using VRC.SDK3.Components;
+using VRC.SDKBase;
+using VRC.Udon;
+
+public class FrameWithCamera : UdonSharpBehaviour
+{
+    public Camera cam;
+
+    public GameObject debugObject;
+
+    public void Focus(GameObject target)
+    {
+        Debug.Log("Focus");
+
+        FocusCameraOnObject(cam, target, 0.4f);
+
+        //cam.TryGetFocusTransforms(target);
+    }
+
+    /// <summary>
+    /// Positions and frames a camera so the entire target GameObject fits in the view.
+    /// Works with both Perspective and Orthographic cameras.
+    /// </summary>
+    /// <param name="cam">Target Camera</param>
+    /// <param name="target">GameObject to frame (e.g., House)</param>
+    /// <param name="margin">Padding ratio (0.0 to 0.5). 0.1 = 10% padding</param>
+    /// <param name="viewDirection">Optional. Direction the camera should face. Defaults to current forward.</param>
+    public void FocusCameraOnObject(Camera cam, GameObject target, float margin = 0.1f)
+    {
+        if (cam == null || target == null) return;
+
+
+
+        // 1. Compute combined world-space bounds
+        Vector3[] minMax = new Vector3[2] { Vector3.zero, Vector3.zero };
+
+        Vector3 boundingBoxSize = GetBoundingBoxSize(target, minMax);
+        Vector3 center = minMax[0] + (boundingBoxSize * 0.5f);
+        Vector3 extents = boundingBoxSize * 0.5f;
+
+        if (debugObject != null) debugObject.transform.position = center;
+
+        if (extents.sqrMagnitude < Mathf.Epsilon)
+        {
+            Debug.LogWarning("Target has no valid bounds. Ensure it contains active Mesh/SkinnedMeshRenderers.");
+            return;
+        }
+
+        // Safe aspect ratio handling (important when using RenderTextures)
+        float aspect = cam.aspect;
+        if (aspect <= 0f && cam.targetTexture != null)
+            aspect = (float)cam.targetTexture.width / cam.targetTexture.height;
+        if (aspect <= 0f) aspect = 1f; // Fallback to 1:1
+
+        // Determine viewing direction
+        Vector3 dir = cam.transform.forward;
+
+        // 2. Position camera based on projection type
+        if (cam.orthographic)
+        {
+            float requiredSize = GetOrthographicSize(extents, aspect, margin);
+            cam.orthographicSize = requiredSize;
+
+            // Orthographic distance doesn't affect framing, but place it reasonably
+            cam.transform.position = center - dir * (extents.z + cam.nearClipPlane);
+            cam.transform.forward = dir;
+        }
+        else
+        {
+            float distance = GetPerspectiveDistance(extents, cam.fieldOfView, aspect, margin);
+            cam.transform.position = center - dir * distance;
+            cam.transform.LookAt(center);
+        }
+    }
+
+    private static Vector3 GetBoundingBoxSize(GameObject root, Vector3[] minMax)
+    {
+        Renderer[] renderers = root.GetComponentsInChildren<Renderer>();
+
+        Vector3 min = minMax[0];
+        Vector3 max = minMax[1];
+
+        foreach (Renderer r in renderers)
+        {
+            min = Vector3.Min(min, r.bounds.min);
+            max = Vector3.Max(max, r.bounds.max);
+        }
+
+        minMax[0] = min;
+        minMax[1] = max;
+        return max - min;
+    }
+
+    private static float GetPerspectiveDistance(Vector3 extents, float fov, float aspect, float margin)
+    {
+        float tanHalfFov = Mathf.Tan(fov * Mathf.Deg2Rad * 0.5f);
+        float adjustedY = extents.y / (1f - margin);
+        float adjustedX = extents.x / (1f - margin);
+
+        float distHeight = adjustedY / tanHalfFov;
+        float distWidth = adjustedX / (tanHalfFov * aspect);
+
+        return Mathf.Max(distHeight, distWidth);
+    }
+
+    private static float GetOrthographicSize(Vector3 extents, float aspect, float margin)
+    {
+        float adjustedY = extents.y / (1f - margin);
+        float adjustedX = extents.x / (1f - margin);
+        // orthographicSize = half visible height
+        return Mathf.Max(adjustedY, adjustedX / aspect);
+    }
+
+}
+

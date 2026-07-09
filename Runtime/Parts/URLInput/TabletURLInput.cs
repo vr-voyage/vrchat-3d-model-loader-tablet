@@ -48,7 +48,8 @@ namespace VoyageVoyage
             Load(result.ResultBytes);
 
             inputField.interactable = true;
-            if (WeAreTheOwner() && initiator)
+            if (!initiator) return;
+            if (WeAreTheOwner())
             {
                 WeGotOwnership();
             }

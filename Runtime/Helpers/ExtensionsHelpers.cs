@@ -30,4 +30,15 @@ public static class ExtensionsHelpers
             UnityEngine.Object.Destroy(go);
         }
     }
+
+    public static void Fill<T>(this T[] arr, T value)
+    {
+        if (arr == null) return;
+        int nValues = arr.Length;
+        
+        for (int i = 0; i < nValues; i++)
+        {
+            arr[i] = value;
+        }
+    }
 }
