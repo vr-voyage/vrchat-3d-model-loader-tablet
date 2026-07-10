@@ -54,7 +54,6 @@ public class NodeInspectorMaterialsController : INodeInspectorComponent
 
     void DisplayMaterials(Material[] materials)
     {
-        Debug.Log("DISPLAY MATERIALS (MATERIALS) !!!!");
         int nMaterials = materials.Length;
         for (int m = 0; m < nMaterials; m++)
         {
@@ -66,12 +65,11 @@ public class NodeInspectorMaterialsController : INodeInspectorComponent
 
     public override void Display(GameObject go)
     {
-        Debug.Log("DISPLAY MATERIALS (GO) !!!!");
         Clear();
         var meshRenderer = go.GetComponent<MeshRenderer>();
         bool hasRenderer = meshRenderer != null;
         gameObject.SetActive(hasRenderer);
-        if (!hasRenderer) { Debug.Log("DISPLAY MATERIALS (NO RENDERER) !!!!"); return; }
+        if (!hasRenderer) { return; }
         DisplayMaterials(meshRenderer.sharedMaterials);
     }
 }
