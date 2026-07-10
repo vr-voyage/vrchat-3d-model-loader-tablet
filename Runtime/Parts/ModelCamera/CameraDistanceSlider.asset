@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: CameraDistanceSlider
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 2c7f566d45e689944a6e2128d4865141,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 5e04065d5bf48394eb546cb83ea82609,
     type: 2}
   udonAssembly: 
   assemblyError: 

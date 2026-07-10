@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: CurvedLaserEffect
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: b2eb8b420bfb75b4e98436d6cd3d8ef1,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 039e807f52235324f90c9056f44dbf6a,
     type: 2}
   udonAssembly: 
   assemblyError: 

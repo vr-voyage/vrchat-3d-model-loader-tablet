@@ -233,7 +233,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 8641563027451035430}
   stateReceivers:
   - {fileID: 5831683036684157374}
-  loaderPrefab: {fileID: 3436173204912485302, guid: 3792ca747ca1c5448a41e7f09d156a5f,
+  loaderPrefab: {fileID: 3436173204912485302, guid: 248614cb77d66f34f857345a7305733d,
     type: 3}
   currentInstance: {fileID: 0}
 --- !u!114 &8641563027451035430

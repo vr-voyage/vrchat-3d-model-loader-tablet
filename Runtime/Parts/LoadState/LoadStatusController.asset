@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: LoadStatusController
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: c9ccce2658ea43746bb000200fa27c1f,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 5265da1ebfb8a3141a7cb59d374b6db0,
     type: 2}
   udonAssembly: 
   assemblyError: 

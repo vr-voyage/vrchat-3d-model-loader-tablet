@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: AttachToVRCPart
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 97b0944752a430f4e9ef4f83e7963a1c,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: f849776f283358a468ddeb0ffa0e88ea,
     type: 2}
   udonAssembly: 
   assemblyError: 
