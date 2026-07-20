@@ -42,8 +42,6 @@ public class FrameWithCamera : UdonSharpBehaviour
         Vector3 center = minMax[0] + (boundingBoxSize * 0.5f);
         Vector3 extents = boundingBoxSize * 0.5f;
 
-        Debug.Log($"<color=cyan>[{minMax[0]} - {minMax[1]}] from {target.transform.position} Size: {boundingBoxSize} Center: {center} Extents: {extents}</color>");
-
         if (debugObject != null) debugObject.transform.position = center;
 
         if (extents.sqrMagnitude < Mathf.Epsilon)
@@ -84,7 +82,6 @@ public class FrameWithCamera : UdonSharpBehaviour
         for (int i = 1; i < nRenderers; i++)
         {
             Renderer r = renderers[i];
-            Debug.Log($"<color=cyan>{r.name} - {r.bounds.min} - {r.bounds.max}</color>");
             min = Vector3.Min(min, r.bounds.min);
             max = Vector3.Max(max, r.bounds.max);
         }

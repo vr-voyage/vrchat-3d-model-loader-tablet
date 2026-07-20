@@ -23,7 +23,7 @@ public class ObjectCamera : UdonSharpBehaviour
     /// </srp>
     public void FrameTarget(GameObject targetCameraCenter, Camera targetCamera, GameObject targetObject, float margin)
     {
-        if (targetObject == null || targetCamera == null) return;
+        if (targetCameraCenter == null || targetObject == null || targetCamera == null) return;
 
         // 1. Compute the True World-Space Bounding Box
         Bounds combinedBounds = ComputeBounds(targetObject);

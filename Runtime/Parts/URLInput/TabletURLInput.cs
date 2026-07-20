@@ -20,14 +20,25 @@ namespace VoyageVoyage
         VRCUrl lastUrl;
 
         bool initiator = false;
+        bool firstSync = false;
+        double urlSetTime = 0;
 
         [UdonSynced]
         [HideInInspector]
         public VRCUrl syncedUrl;
 
+        [UdonSynced]
+        [HideInInspector]
+        public double syncedTime;
+
         public void Load(byte[] data)
         {
             mainUi.LoadData(data, lastUrl);
+        }
+
+        private void Start()
+        {
+            urlSetTime = Networking.GetServerTimeInSeconds();
         }
 
         bool ValidURL(VRCUrl url)
@@ -49,6 +60,7 @@ namespace VoyageVoyage
 
             inputField.interactable = true;
             if (!initiator) return;
+            initiator = false;
             if (WeAreTheOwner())
             {
                 WeGotOwnership();
@@ -67,16 +79,22 @@ namespace VoyageVoyage
 
         public override void Interact()
         {
+            Debug.Log("<color=cyan>URL INTERACT !</color>");
             VRCUrl url = inputField.GetUrl();
             if (!ValidURL(url)) return;
 
             initiator = true;
+            urlSetTime = Networking.GetServerTimeInSeconds();
             Download(url);
         }
 
         public override void OnDeserialization()
         {
+            /* We ignore invalid URL */
             if (!ValidURL(syncedUrl)) return;
+            Debug.Log($"<color=cyan>{urlSetTime} >= {syncedTime} ?</color>");
+            /* We ignore synchro from the past. This breaks sync loops */
+            if (urlSetTime >= syncedTime) return;
             inputField.SetUrl(syncedUrl);
             Download(syncedUrl);
         }
@@ -100,6 +118,7 @@ namespace VoyageVoyage
         void WeGotOwnership()
         {
             syncedUrl = lastUrl;
+            syncedTime = urlSetTime;
             RequestSerialization();
         }
 
